@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-toolbar class="dashboard-header">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mi Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToCreateTicket()">
+        <ion-icon name="add-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="dashboard-content">
+  
+  <!-- Tarjeta de Estado de Servicios (API Adicional) -->
+  <ion-card class="services-card">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="server-outline"></ion-icon>
+        Estado de Servicios
+      </ion-card-title>
+      <ion-card-subtitle>Estado actual de los servicios corporativos</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row *ngFor="let service of servicesStatus">
+          <ion-col size="6">
+            <span class="service-name">{{ service.name }}</span>
+          </ion-col>
+          <ion-col size="6">
+            <ion-chip [color]="getServiceStatusColor(service.status)" class="service-chip">
+              <ion-icon [name]="getServiceStatusIcon(service.status)" slot="start"></ion-icon>
+              <span>{{ getServiceStatusText(service.status) }}</span>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div class="note">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <small>Actualizado: {{ servicesStatus[0]?.lastCheck | date:'HH:mm:ss' }}</small>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Estadísticas -->
+  <div class="stats-grid">
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Total Tickets</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.abiertos }}</div>
+        <div class="stat-label">Abiertos</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.enProceso }}</div>
+        <div class="stat-label">En Proceso</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.resueltos }}</div>
+        <div class="stat-label">Resueltos</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Lista de tickets -->
+  <div class="tickets-section">
+    <div class="section-header">
+      <h2>Mis Tickets</h2>
+      <ion-button fill="clear" (click)="goToCreateTicket()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Nuevo
+      </ion-button>
+    </div>
+
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <ion-icon name="refresh-outline" class="loading-icon"></ion-icon>
+      <p>Cargando tickets...</p>
+    </div>
+
+    <div *ngIf="!isLoading && tickets.length === 0" class="empty-state">
+      <ion-icon name="ticket-outline" class="empty-icon"></ion-icon>
+      <p>No tienes tickets aún</p>
+      <ion-button (click)="goToCreateTicket()" fill="outline">Crear mi primer ticket</ion-button>
+    </div>
+
+    <div *ngFor="let ticket of tickets" class="ticket-card" (click)="goToTicketDetail(ticket.id!)">
+      <div class="ticket-header">
+        <h3>{{ ticket.title }}</h3>
+        <ion-chip [color]="getStatusColor(ticket.status)" size="small">
+          {{ getStatusText(ticket.status) }}
+        </ion-chip>
+      </div>
+      <p class="ticket-description">{{ ticket.description | slice:0:100 }}...</p>
+      <div class="ticket-footer">
+        <ion-chip [color]="getPriorityColor(ticket.priority)" size="small" outline>
+          {{ getPriorityText(ticket.priority) }}
+        </ion-chip>
+        <span class="ticket-date">{{ ticket.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar class="detail-header">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalle del Ticket</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detail-content">
+  
+  <!-- Cargando -->
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Cargando ticket...</p>
+  </div>
+
+  <!-- Ticket no encontrado -->
+  <div *ngIf="!isLoading && !ticket" class="empty-state">
+    <ion-icon name="alert-circle-outline" class="empty-icon"></ion-icon>
+    <p>Ticket no encontrado</p>
+    <ion-button (click)="volver()">Volver al Dashboard</ion-button>
+  </div>
+
+  <!-- Detalle del ticket -->
+  <div *ngIf="!isLoading && ticket" class="ticket-detail">
+    <ion-card class="detail-card">
+      <ion-card-content>
+        
+        <div class="ticket-header">
+          <h2>{{ ticket.title }}</h2>
+          <ion-chip [color]="getStatusColor(ticket.status)">
+            {{ getStatusText(ticket.status) }}
+          </ion-chip>
+        </div>
+
+        <div class="ticket-meta">
+          <ion-chip [color]="getPriorityColor(ticket.priority)" outline>
+            {{ getPriorityText(ticket.priority) }}
+          </ion-chip>
+          <span class="date">📅 {{ ticket.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="user">👤 {{ ticket.userEmail }}</span>
+        </div>
+
+        <div class="ticket-description">
+          <h3>Descripción del problema</h3>
+          <p>{{ ticket.description }}</p>
+        </div>
+
+        <div class="ticket-response" *ngIf="ticket.response">
+          <h3>Respuesta del soporte</h3>
+          <p>{{ ticket.response }}</p>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

@@ -1,0 +1,49 @@
+.create-header {
+  --background: #C5E0F0;
+  
+  ion-title {
+    --color: #1A4A6E;
+    font-weight: 600;
+  }
+  
+  ion-menu-button {
+    --color: #1A4A6E;
+  }
+}
+
+.create-content {
+  --background: #DCE8F5;
+}
+
+.form-card {
+  margin: 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+.input-item {
+  margin-bottom: 20px;
+  --border-radius: 12px;
+  --background: #F5F8FC;
+  
+  ion-label {
+    color: #1A4A6E;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  ion-input, ion-textarea, ion-select {
+    --padding-start: 0;
+  }
+}
+
+.create-button {
+  --background: #5A9BD5;
+  --background-hover: #4A87B8;
+  --border-radius: 30px;
+  height: 48px;
+  margin-top: 16px;
+  font-weight: 600;
+  text-transform: none;
+}

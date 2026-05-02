@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar class="payment-header">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Soporte Urgente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="payment-content">
+  
+  <div class="info-card">
+    <ion-icon name="alert-circle-outline" class="info-icon"></ion-icon>
+    <h3>¿Necesitas ayuda urgente?</h3>
+    <p>Selecciona un plan y recibe atención prioritaria para tus problemas técnicos.</p>
+  </div>
+
+  <ion-card class="plan-card">
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label position="stacked">Selecciona un plan</ion-label>
+        <ion-select [(ngModel)]="planSeleccionado" (ionChange)="cambiarPlan($event.detail.value)" interface="action-sheet">
+          <ion-select-option [value]="plan" *ngFor="let plan of planes">
+            {{ plan.nombre }} - ${{ plan.precio }} USD
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div class="plan-details">
+        <h2>{{ planSeleccionado.nombre }}</h2>
+        <div class="price">${{ planSeleccionado.precio }} USD</div>
+        <p>{{ planSeleccionado.descripcion }}</p>
+      </div>
+
+      <div id="paypal-button-container" class="paypal-button"></div>
+
+      <div class="benefits" *ngIf="!pagoCompletado">
+        <h4>Beneficios:</h4>
+        <ul>
+          <li>✅ Atención prioritaria</li>
+          <li>✅ Respuesta garantizada</li>
+          <li>✅ Soporte 24/7</li>
+          <li>✅ Seguimiento personalizado</li>
+        </ul>
+      </div>
+
+      <div class="success-message" *ngIf="pagoCompletado">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <h3>¡Pago Completado!</h3>
+        <p>Tu soporte urgente ha sido activado. Crea un ticket y tendrás prioridad.</p>
+        <ion-button expand="block" routerLink="/create-ticket">Crear Ticket Urgente</ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar class="admin-header">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Panel Administrador</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="doRefresh($event)">
+        <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="admin-content">
+  
+  <!-- Tarjetas de estadísticas -->
+  <div class="stats-grid">
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Total Tickets</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.abiertos }}</div>
+        <div class="stat-label">Abiertos</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.enProceso }}</div>
+        <div class="stat-label">En Proceso</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.resueltos }}</div>
+        <div class="stat-label">Resueltos</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Lista de tickets -->
+  <div class="tickets-section">
+    <h2>Todos los Tickets</h2>
+
+    <div *ngIf="isLoading" class="loading-state">
+      <p>Cargando tickets...</p>
+    </div>
+
+    <div *ngIf="!isLoading && tickets.length === 0" class="empty-state">
+      <p>No hay tickets registrados</p>
+    </div>
+
+    <ion-list *ngIf="!isLoading && tickets.length > 0">
+      <ion-item *ngFor="let ticket of tickets" class="ticket-item" lines="full">
+        <ion-label>
+          <h3>{{ ticket.title }}</h3>
+          <p>{{ ticket.description | slice:0:80 }}...</p>
+          <div class="ticket-meta">
+            <ion-chip [color]="getStatusColor(ticket.status)" size="small">
+              {{ getStatusText(ticket.status) }}
+            </ion-chip>
+            <ion-chip [color]="getPriorityColor(ticket.priority)" size="small" outline>
+              {{ getPriorityText(ticket.priority) }}
+            </ion-chip>
+            <span class="ticket-user">👤 {{ ticket.userEmail }}</span>
+            <span class="ticket-date">{{ ticket.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </ion-label>
+        <div class="ticket-actions">
+          <ion-button fill="clear" size="small" (click)="cambiarEstado(ticket, 'en_proceso')" *ngIf="ticket.status === 'abierto'">
+            Iniciar
+          </ion-button>
+          <ion-button fill="clear" size="small" (click)="cambiarEstado(ticket, 'resuelto')" *ngIf="ticket.status === 'en_proceso'">
+            Resolver
+          </ion-button>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

@@ -35,3 +35,40 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+:root {
+  // Colores azules más oscuros
+  --pastel-blue-bg: #DCE8F5;
+  --pastel-blue-card: #FFFFFF;
+  --pastel-blue-button: #5A9BD5;
+  --pastel-blue-button-hover: #4A87B8;
+  --pastel-blue-text: #1A4A6E;
+  --pastel-blue-text-light: #5B8DB0;
+  --pastel-blue-header: #C5E0F0;
+  --pastel-blue-border: #B0D0E8;
+}
+
+* {
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+/* Estilos globales */
+* {
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Roboto', sans-serif;
+}
+
+/* Botones personalizados */
+ion-button {
+  --border-radius: 12px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Tarjetas */
+ion-card {
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Headers */
+ion-header ion-toolbar {
+  --border-width: 0;
+}

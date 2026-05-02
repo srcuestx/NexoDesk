@@ -1,0 +1,88 @@
+.detail-header {
+  --background: #C5E0F0;
+  
+  ion-title {
+    --color: #1A4A6E;
+    font-weight: 600;
+  }
+  
+  ion-back-button {
+    --color: #1A4A6E;
+  }
+}
+
+.detail-content {
+  --background: #DCE8F5;
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #5B8DB0;
+  
+  .empty-icon {
+    font-size: 64px;
+    color: #C5E0F0;
+    margin-bottom: 16px;
+  }
+}
+
+.detail-card {
+  margin: 16px;
+  border-radius: 20px;
+  background: white;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A4A6E;
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.ticket-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #C5E0F0;
+  
+  .date, .user {
+    font-size: 12px;
+    color: #5B8DB0;
+  }
+}
+
+.ticket-description, .ticket-response {
+  margin-top: 16px;
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A4A6E;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #5B8DB0;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.ticket-response {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #C5E0F0;
+}

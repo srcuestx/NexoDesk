@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar class="setup-header">
+    <ion-title>Configurar Administrador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="setup-content">
+  <div class="setup-container">
+    <ion-card>
+      <ion-card-content>
+        <h2>👑 Agregar Administrador</h2>
+        <p>Ingresa el email del usuario que será administrador</p>
+
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input type="email" [(ngModel)]="email" placeholder="usuario@ejemplo.com"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="agregarAdmin()" class="admin-button">
+          Agregar como Administrador
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" (click)="agregarMultiplesAdmins()" class="admin-button">
+          👑 Agregar 3 Administradores (Equipo)
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" (click)="verificarAdmins()" class="verify-button">
+          Ver Administradores Actuales
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

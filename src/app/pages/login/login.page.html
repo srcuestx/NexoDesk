@@ -1,0 +1,56 @@
+<ion-content class="login-background">
+  <div class="login-container">
+    
+    <div class="logo-section">
+      <div class="logo-icon">
+        <img src="assets/logo.png" alt="Nexo Desk" class="logo-img" onerror="this.src='https://via.placeholder.com/80?text=ND'">
+      </div>
+      <h1>Nexo Desk</h1>
+      <p>Sistema de gestión de tickets</p>
+    </div>
+
+    <ion-card class="login-card">
+      <ion-card-content>
+        
+        <ion-item lines="none" class="input-item">
+          <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input
+            type="email"
+            placeholder="correo@ejemplo.com"
+            [(ngModel)]="email"
+            label="Email"
+            labelPlacement="floating"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
+          <ion-input
+            type="password"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            label="Contraseña"
+            labelPlacement="floating"
+          ></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="login()" class="login-button">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Iniciar Sesión
+        </ion-button>
+
+        <div class="forgot-link">
+          <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <div class="register-link">
+          <p>¿No tienes cuenta? 
+            <a routerLink="/register">Regístrate aquí</a>
+          </p>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

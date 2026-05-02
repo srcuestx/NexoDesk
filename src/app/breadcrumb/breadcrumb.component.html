@@ -1,0 +1,8 @@
+<ion-breadcrumbs class="custom-breadcrumb">
+  <ion-breadcrumb *ngFor="let crumb of breadcrumbs; let last = last" 
+                  [routerLink]="last ? null : crumb.url"
+                  [attr.aria-current]="last ? 'page' : null">
+    <ion-icon *ngIf="crumb.icon" [name]="crumb.icon" slot="start"></ion-icon>
+    {{ crumb.label }}
+  </ion-breadcrumb>
+</ion-breadcrumbs>

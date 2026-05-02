@@ -1,3 +1,97 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    
+    <!-- Menú Lateral -->
+    <ion-menu contentId="main-content" type="overlay" class="custom-menu">
+      <ion-header>
+        <ion-toolbar class="menu-header">
+          <ion-title class="menu-title">
+            <div class="menu-logo">
+              <img src="assets/logo.png" alt="Nexo Desk" class="logo-img" onerror="this.src='https://via.placeholder.com/40?text=ND'">
+              <span>Nexo Desk</span>
+            </div>
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="menu-content">
+        <ion-list class="menu-list">
+          
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irAPagina('/dashboard')" lines="none" class="menu-item">
+              <ion-icon name="home-outline" slot="start" class="menu-icon"></ion-icon>
+              <ion-label>Dashboard</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irAPagina('/create-ticket')" lines="none" class="menu-item">
+              <ion-icon name="add-circle-outline" slot="start" class="menu-icon"></ion-icon>
+              <ion-label>Crear Ticket</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irAPagina('/chatbot')" lines="none" class="menu-item">
+              <ion-icon name="chatbubble-outline" slot="start" class="menu-icon"></ion-icon>
+              <ion-label>Asistente IA</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irAPagina('/payment')" lines="none" class="menu-item">
+              <ion-icon name="card-outline" slot="start" class="menu-icon"></ion-icon>
+              <ion-label>Soporte Urgente</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <div class="menu-divider"></div>
+
+          <div *ngIf="esAdmin">
+            <ion-item class="menu-subheader" lines="none">
+              <ion-label>Administración</ion-label>
+            </ion-item>
+            
+            <ion-menu-toggle auto-hide="false">
+              <ion-item (click)="irAPagina('/admin')" lines="none" class="menu-item">
+                <ion-icon name="speedometer-outline" slot="start" class="menu-icon"></ion-icon>
+                <ion-label>Panel Admin</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle auto-hide="false">
+              <ion-item (click)="irAPagina('/admin/tickets')" lines="none" class="menu-item">
+                <ion-icon name="list-outline" slot="start" class="menu-icon"></ion-icon>
+                <ion-label>Gestionar Tickets</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
+
+          <div class="menu-divider"></div>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="logout()" lines="none" class="menu-item logout-item">
+              <ion-icon name="log-out-outline" slot="start" class="menu-icon"></ion-icon>
+              <ion-label>Cerrar Sesión</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+        </ion-list>
+      </ion-content>
+
+      <ion-footer class="menu-footer">
+        <div class="user-info">
+          <ion-icon name="person-circle-outline" class="user-icon"></ion-icon>
+          <div class="user-details">
+            <span class="user-name">{{ nombreUsuario || 'Invitado' }}</span>
+            <span class="user-role" [class.is-admin]="esAdmin">{{ esAdmin ? 'Administrador' : (estaLogueado ? 'Usuario' : 'No logueado') }}</span>
+          </div>
+        </div>
+      </ion-footer>
+    </ion-menu>
+
+    <!-- Contenido Principal -->
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+    
+  </ion-split-pane>
 </ion-app>

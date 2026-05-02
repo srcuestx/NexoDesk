@@ -1,0 +1,67 @@
+.admin-header {
+  --background: #C5E0F0;
+  
+  ion-title {
+    --color: #1A4A6E;
+    font-weight: 600;
+  }
+  
+  ion-menu-button {
+    --color: #1A4A6E;
+  }
+}
+
+.admin-content {
+  --background: #DCE8F5;
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #5B8DB0;
+}
+
+.ticket-item {
+  --background: white;
+  margin-bottom: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border-radius: 16px;
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A4A6E;
+    margin-bottom: 6px;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #5B8DB0;
+    margin-bottom: 8px;
+  }
+}
+
+.ticket-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  
+  .ticket-user, .ticket-date {
+    font-size: 11px;
+    color: #8DB3D0;
+  }
+}
+
+.ticket-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  
+  ion-button {
+    --color: #5A9BD5;
+    font-size: 12px;
+  }
+}

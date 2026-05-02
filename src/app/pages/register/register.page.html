@@ -1,0 +1,59 @@
+<ion-content class="register-background">
+  <div class="register-container">
+    
+    <ion-button fill="clear" class="back-button" routerLink="/login">
+      <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+      Volver
+    </ion-button>
+
+    <div class="logo-section">
+      <div class="logo-icon">🎫</div>
+      <h1>Crear Cuenta</h1>
+      <p>Regístrate para comenzar</p>
+    </div>
+
+    <ion-card class="register-card">
+      <ion-card-content>
+        
+        <ion-item lines="none" class="input-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input
+            type="email"
+            placeholder="correo@ejemplo.com"
+            [(ngModel)]="email"
+            label="Email"
+            labelPlacement="stacked"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input
+            type="password"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            label="Contraseña"
+            labelPlacement="stacked"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input
+            type="password"
+            placeholder="••••••••"
+            [(ngModel)]="confirmPassword"
+            label="Confirmar Contraseña"
+            labelPlacement="stacked"
+          ></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="register()" class="register-button">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Registrarse
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
