@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { 
-  IonContent, 
-  IonHeader, 
-  IonTitle, 
-  IonToolbar, 
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
   IonButton,
   IonIcon,
   IonInput,
@@ -50,7 +50,9 @@ interface Mensaje {
     IonLabel
   ]
 })
-export class ChatbotPage {
+export class ChatbotPage implements AfterViewChecked {
+  @ViewChild('messagesEnd') messagesEnd!: ElementRef;
+
   mensajes: Mensaje[] = [];
   nuevoMensaje: string = '';
   isLoading: boolean = false;
@@ -61,16 +63,27 @@ export class ChatbotPage {
   ) {
     addIcons({ sendOutline, chatbubbleOutline, trashOutline, refreshOutline });
     this.mensajes.push({
-      texto: '¡Hola! Soy el asistente de Nexo Desk, potenciado con inteligencia artificial. ¿En qué puedo ayudarte hoy?',
+      texto: '¡Hola! Soy el asistente de NexoDesk, potenciado con inteligencia artificial. ¿En qué puedo ayudarte hoy?',
       esUsuario: false,
       fecha: new Date()
     });
   }
 
-  async enviarMensaje() {
-    if (!this.nuevoMensaje.trim()) return;
+  ngAfterViewChecked() {
+    this.scrollAlFinal();
+  }
 
-    // Agregar mensaje del usuario
+  scrollAlFinal() {
+    try {
+      if (this.messagesEnd?.nativeElement) {
+        this.messagesEnd.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch {}
+  }
+
+  async enviarMensaje() {
+    if (!this.nuevoMensaje.trim() || this.isLoading) return;
+
     this.mensajes.push({
       texto: this.nuevoMensaje,
       esUsuario: true,
@@ -81,7 +94,6 @@ export class ChatbotPage {
     this.nuevoMensaje = '';
     this.isLoading = true;
 
-    // Llamar a la IA
     const respuestaIA = await this.aiService.getResponse(pregunta);
 
     this.mensajes.push({
@@ -89,12 +101,14 @@ export class ChatbotPage {
       esUsuario: false,
       fecha: new Date()
     });
+
     this.isLoading = false;
   }
 
   limpiarChat() {
+    this.aiService.limpiarHistorial(); // limpia el contexto de la IA también
     this.mensajes = [{
-      texto: '¡Hola! Soy el asistente de Nexo Desk, potenciado con inteligencia artificial. ¿En qué puedo ayudarte hoy?',
+      texto: '¡Hola! Soy el asistente de NexoDesk, potenciado con inteligencia artificial. ¿En qué puedo ayudarte hoy?',
       esUsuario: false,
       fecha: new Date()
     }];
