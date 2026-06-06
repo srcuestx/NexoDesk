@@ -17,6 +17,7 @@
       <ion-content class="menu-content">
         <ion-list class="menu-list">
           
+          <!-- Opciones comunes para todos los usuarios autenticados -->
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="irAPagina('/dashboard')" lines="none" class="menu-item">
               <ion-icon name="home-outline" slot="start" class="menu-icon"></ion-icon>
@@ -47,6 +48,18 @@
 
           <div class="menu-divider"></div>
 
+          <!-- Opción exclusiva para técnicos (ver sus tickets asignados) -->
+          <div *ngIf="esTecnico">
+            <ion-menu-toggle auto-hide="false">
+              <ion-item (click)="irAPagina('/technician-dashboard')" lines="none" class="menu-item">
+                <ion-icon name="construct-outline" slot="start" class="menu-icon"></ion-icon>
+                <ion-label>Mis Tickets Asignados</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <div class="menu-divider"></div>
+          </div>
+
+          <!-- Panel de administración (solo visible para admin) -->
           <div *ngIf="esAdmin">
             <ion-item class="menu-subheader" lines="none">
               <ion-label>Administración</ion-label>
@@ -65,11 +78,11 @@
                 <ion-label>Gestionar Tickets</ion-label>
               </ion-item>
             </ion-menu-toggle>
+            <div class="menu-divider"></div>
           </div>
 
-          <div class="menu-divider"></div>
-
-          <ion-menu-toggle auto-hide="false">
+          <!-- Cerrar sesión (visible solo cuando hay usuario logueado) -->
+          <ion-menu-toggle auto-hide="false" *ngIf="estaLogueado">
             <ion-item (click)="logout()" lines="none" class="menu-item logout-item">
               <ion-icon name="log-out-outline" slot="start" class="menu-icon"></ion-icon>
               <ion-label>Cerrar Sesión</ion-label>
@@ -84,7 +97,9 @@
           <ion-icon name="person-circle-outline" class="user-icon"></ion-icon>
           <div class="user-details">
             <span class="user-name">{{ nombreUsuario || 'Invitado' }}</span>
-            <span class="user-role" [class.is-admin]="esAdmin">{{ esAdmin ? 'Administrador' : (estaLogueado ? 'Usuario' : 'No logueado') }}</span>
+            <span class="user-role" [class.is-admin]="esAdmin">
+              {{ esAdmin ? 'Administrador' : (esTecnico ? 'Técnico' : (estaLogueado ? 'Usuario' : 'No logueado')) }}
+            </span>
           </div>
         </div>
       </ion-footer>

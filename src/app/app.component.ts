@@ -17,6 +17,7 @@ import {
   IonRouterOutlet
 } from '@ionic/angular/standalone';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getDatabase, ref, get } from 'firebase/database';
 import { addIcons } from 'ionicons';
 import { 
   homeOutline, 
@@ -27,7 +28,8 @@ import {
   speedometerOutline, 
   listOutline, 
   logOutOutline,
-  personCircleOutline
+  personCircleOutline,
+  constructOutline   // 👈 NUEVO: para el ícono del técnico
 } from 'ionicons/icons';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -59,6 +61,7 @@ import { RouterModule } from '@angular/router';
 export class AppComponent implements OnInit {
   nombreUsuario: string = '';
   esAdmin: boolean = false;
+  esTecnico: boolean = false;   // 👈 NUEVO
   estaLogueado: boolean = false;
 
   private emailsAdmin = [
@@ -77,7 +80,8 @@ export class AppComponent implements OnInit {
       speedometerOutline,
       listOutline,
       logOutOutline,
-      personCircleOutline
+      personCircleOutline,
+      constructOutline   // 👈 NUEVO
     });
   }
 
@@ -89,10 +93,20 @@ export class AppComponent implements OnInit {
         this.estaLogueado = true;
         this.nombreUsuario = user.email?.split('@')[0] || 'Usuario';
         this.esAdmin = this.emailsAdmin.includes(user.email || '');
+
+        // 👇 Verificar si el usuario es técnico (está en system/technicians)
+        const db = getDatabase();
+        const systemRef = ref(db, 'system');
+        const snapshot = await get(systemRef);
+        const system = snapshot.val();
+        const technicians = system?.technicians || [];
+        this.esTecnico = technicians.includes(user.email || '') && !this.esAdmin;
+        
       } else {
         this.estaLogueado = false;
         this.nombreUsuario = '';
         this.esAdmin = false;
+        this.esTecnico = false;
       }
     });
   }

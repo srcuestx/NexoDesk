@@ -14,7 +14,25 @@
 
 <ion-content class="admin-content">
   
-  <!-- Tarjetas de estadísticas -->
+  <!-- Filtros -->
+  <div class="filters">
+    <ion-segment [(ngModel)]="filtroEstado" (ionChange)="aplicarFiltro()">
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="abierto">
+        <ion-label>Abiertos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="en_proceso">
+        <ion-label>En Proceso</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="resuelto">
+        <ion-label>Resueltos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Estadísticas -->
   <div class="stats-grid">
     <ion-card class="stat-card">
       <ion-card-content>
@@ -50,12 +68,12 @@
       <p>Cargando tickets...</p>
     </div>
 
-    <div *ngIf="!isLoading && tickets.length === 0" class="empty-state">
-      <p>No hay tickets registrados</p>
+    <div *ngIf="!isLoading && ticketsFiltrados.length === 0" class="empty-state">
+      <p>No hay tickets con este estado</p>
     </div>
 
-    <ion-list *ngIf="!isLoading && tickets.length > 0">
-      <ion-item *ngFor="let ticket of tickets" class="ticket-item" lines="full">
+    <ion-list *ngIf="!isLoading && ticketsFiltrados.length > 0">
+      <ion-item *ngFor="let ticket of ticketsFiltrados" class="ticket-item" lines="full" (click)="goToTicketDetail(ticket.id!, ticket.userId)" button>
         <ion-label>
           <h3>{{ ticket.title }}</h3>
           <p>{{ ticket.description | slice:0:80 }}...</p>
@@ -66,18 +84,14 @@
             <ion-chip [color]="getPriorityColor(ticket.priority)" size="small" outline>
               {{ getPriorityText(ticket.priority) }}
             </ion-chip>
-            <span class="ticket-user">👤 {{ ticket.userEmail }}</span>
-            <span class="ticket-date">{{ ticket.createdAt | date:'dd/MM/yyyy' }}</span>
+            <span class="ticket-user"><strong style="font-size: 17px">Usuario:</strong> {{ ticket.userEmail }}</span>
+            <span class="ticket-date"><strong style="font-size: 17px">Fecha:</strong> {{ ticket.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <!-- Técnico asignado -->
+          <div class="ticket-technician" *ngIf="ticket.assignedTo">
+            <ion-icon name="person-outline"></ion-icon> Técnico: {{ ticket.assignedTo }}
           </div>
         </ion-label>
-        <div class="ticket-actions">
-          <ion-button fill="clear" size="small" (click)="cambiarEstado(ticket, 'en_proceso')" *ngIf="ticket.status === 'abierto'">
-            Iniciar
-          </ion-button>
-          <ion-button fill="clear" size="small" (click)="cambiarEstado(ticket, 'resuelto')" *ngIf="ticket.status === 'en_proceso'">
-            Resolver
-          </ion-button>
-        </div>
       </ion-item>
     </ion-list>
   </div>

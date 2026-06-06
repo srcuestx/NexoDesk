@@ -16,62 +16,68 @@
 </ion-header>
 
 <ion-content class="chatbot-content">
-  
   <div class="chat-container">
-    <ion-list class="chat-list">
-      <ion-item *ngFor="let mensaje of mensajes" [class.user-message]="mensaje.esUsuario" [class.bot-message]="!mensaje.esUsuario" lines="none">
-        <ion-avatar slot="start" *ngIf="!mensaje.esUsuario">
-          <div class="bot-avatar">🤖</div>
-        </ion-avatar>
-        <ion-label>
-          <div class="message-bubble" [class.user-bubble]="mensaje.esUsuario" [class.bot-bubble]="!mensaje.esUsuario">
-            <p>{{ mensaje.texto }}</p>
-            <small>{{ mensaje.fecha | date:'h:mm a' }}</small>
-          </div>
-        </ion-label>
-        <ion-avatar slot="end" *ngIf="mensaje.esUsuario">
-          <div class="user-avatar">👤</div>
-        </ion-avatar>
-      </ion-item>
-      
-      <ion-item *ngIf="isLoading" lines="none" class="bot-message">
-        <ion-avatar slot="start">
-          <div class="bot-avatar typing">🤖</div>
-        </ion-avatar>
-        <ion-label>
-          <div class="message-bubble bot-bubble typing-indicator">
-            <span>.</span><span>.</span><span>.</span>
-          </div>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+    <!-- Área de mensajes (scrollable) -->
+    <div class="messages-area">
+      <ion-list class="chat-list">
+        <ion-item *ngFor="let mensaje of mensajes" [class.user-message]="mensaje.esUsuario" [class.bot-message]="!mensaje.esUsuario" lines="none">
+          <ion-avatar slot="start" *ngIf="!mensaje.esUsuario">
+            <div class="bot-avatar">🤖</div>
+          </ion-avatar>
+          <ion-label>
+            <div class="message-bubble" [class.user-bubble]="mensaje.esUsuario" [class.bot-bubble]="!mensaje.esUsuario">
+              <p>{{ mensaje.texto }}</p>
+              <small>{{ mensaje.fecha | date:'h:mm a' }}</small>
+            </div>
+          </ion-label>
+          <ion-avatar slot="end" *ngIf="mensaje.esUsuario">
+            <div class="user-avatar">👤</div>
+          </ion-avatar>
+        </ion-item>
+        
+        <ion-item *ngIf="isLoading" lines="none" class="bot-message">
+          <ion-avatar slot="start">
+            <div class="bot-avatar typing">🤖</div>
+          </ion-avatar>
+          <ion-label>
+            <div class="message-bubble bot-bubble typing-indicator">
+              <span>.</span><span>.</span><span>.</span>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
 
-  <div class="input-container">
-    <ion-input
-      [(ngModel)]="nuevoMensaje"
-      placeholder="Escribe tu mensaje..."
-      (keyup.enter)="enviarMensaje()"
-      class="chat-input"
-    ></ion-input>
-    <ion-button (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()" class="send-button">
-      <ion-icon name="send-outline"></ion-icon>
-    </ion-button>
-  </div>
+    <!-- Área inferior fija -->
+    <div class="input-area">
+      <!-- Acciones rápidas (solo al inicio) -->
+      <div class="quick-actions" *ngIf="mensajes.length < 3">
+        <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Computador lento'; enviarMensaje()">
+          💻 PC lento
+        </ion-button>
+        <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Internet no funciona'; enviarMensaje()">
+          🌐 Internet
+        </ion-button>
+        <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Crear ticket'; enviarMensaje()">
+          🎫 Crear ticket
+        </ion-button>
+        <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Soporte urgente'; enviarMensaje()">
+          🚨 Soporte urgente
+        </ion-button>
+      </div>
 
-  <div class="quick-actions" *ngIf="mensajes.length < 3">
-    <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Computador lento'; enviarMensaje()">
-      💻 PC lento
-    </ion-button>
-    <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Internet no funciona'; enviarMensaje()">
-      🌐 Internet
-    </ion-button>
-    <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Crear ticket'; enviarMensaje()">
-      🎫 Crear ticket
-    </ion-button>
-    <ion-button fill="outline" size="small" (click)="nuevoMensaje = 'Soporte urgente'; enviarMensaje()">
-      🚨 Soporte urgente
-    </ion-button>
+      <!-- Barra de entrada -->
+      <div class="input-container">
+        <ion-input
+          [(ngModel)]="nuevoMensaje"
+          placeholder="Escribe tu mensaje..."
+          (keyup.enter)="enviarMensaje()"
+          class="chat-input"
+        ></ion-input>
+        <ion-button (click)="enviarMensaje()" [disabled]="!nuevoMensaje.trim()" class="send-button">
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
   </div>
-
 </ion-content>

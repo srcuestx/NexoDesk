@@ -3,7 +3,7 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
-  // Rutas públicas (sin login)
+  // Rutas públicas
   {
     path: 'landing',
     loadComponent: () => import('./pages/landing/landing.page').then(m => m.LandingPage)
@@ -36,8 +36,15 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/create-ticket/create-ticket.page').then(m => m.CreateTicketPage),
     canActivate: [authGuard]
   },
+  // Para usuarios normales (solo un parámetro)
   {
     path: 'ticket-detail/:id',
+    loadComponent: () => import('./pages/ticket-detail/ticket-detail.page').then(m => m.TicketDetailPage),
+    canActivate: [authGuard]
+  },
+  // Para administradores (dos parámetros: userId y ticketId)
+  {
+    path: 'ticket-detail/:userId/:id',
     loadComponent: () => import('./pages/ticket-detail/ticket-detail.page').then(m => m.TicketDetailPage),
     canActivate: [authGuard]
   },
@@ -50,6 +57,11 @@ export const routes: Routes = [
     path: 'payment',
     loadComponent: () => import('./pages/payment/payment.page').then(m => m.PaymentPage),
     canActivate: [authGuard]
+  },
+  {
+    path: 'technician-dashboard',
+    loadComponent: () => import('./pages/technician-dashboard/technician-dashboard.page').then(m => m.TechnicianDashboardPage),
+    canActivate: [authGuard]   // 👈 AGREGADO
   },
 
   // Rutas de administrador

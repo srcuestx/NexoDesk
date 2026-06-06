@@ -15,8 +15,6 @@ import {
   IonIcon,
   IonCard,
   IonCardContent,
-  IonSelect,
-  IonSelectOption,
   IonButtons,
   IonMenuButton,
   LoadingController,
@@ -47,8 +45,6 @@ import { saveOutline } from 'ionicons/icons';
     IonIcon,
     IonCard,
     IonCardContent,
-    IonSelect,
-    IonSelectOption,
     IonButtons,
     IonMenuButton
   ]
@@ -56,7 +52,7 @@ import { saveOutline } from 'ionicons/icons';
 export class CreateTicketPage implements OnInit {
   title: string = '';
   description: string = '';
-  priority: string = 'media';
+  // priority eliminada – ya no la elige el usuario
 
   constructor(
     private ticketService: TicketService,
@@ -105,10 +101,11 @@ export class CreateTicketPage implements OnInit {
     await loading.present();
 
     try {
+      // Prioridad fija: 'media' (puedes cambiarla a 'baja' si prefieres)
       await this.ticketService.createTicket({
         title: this.title.trim(),
         description: this.description.trim(),
-        priority: this.priority
+        priority: 'media'
       });
       
       await loading.dismiss();

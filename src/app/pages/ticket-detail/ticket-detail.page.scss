@@ -86,3 +86,60 @@
   padding-top: 16px;
   border-top: 1px solid #C5E0F0;
 }
+.ticket-history {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #C5E0F0;
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A4A6E;
+    margin-bottom: 12px;
+  }
+  
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 12px;
+  }
+  
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1A4A6E;
+    margin: 0 0 4px;
+  }
+  
+  p {
+    font-size: 13px;
+    color: #5B8DB0;
+    margin: 0 0 4px;
+  }
+  
+  small {
+    font-size: 11px;
+    color: #8DB3D0;
+  }
+}
+
+.assigned {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+  font-size: 13px;
+  color: #5A9BD5;
+}
+.ticket-assigned {
+  margin: 16px 0;
+  padding: 8px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ticket-history {
+  margin-top: 20px;
+}

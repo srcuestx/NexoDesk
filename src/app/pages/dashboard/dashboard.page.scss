@@ -201,3 +201,17 @@
     transform: rotate(360deg);
   }
 }
+.ticket-assigned {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 13px;
+  color: #5A9BD5;
+  
+  .assigned-icon {
+    font-size: 16px;
+  }
+}

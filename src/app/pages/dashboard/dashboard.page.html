@@ -111,6 +111,11 @@
         </ion-chip>
         <span class="ticket-date">{{ ticket.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
       </div>
+      <!-- 👇 NUEVO: Mostrar técnico asignado (si existe) -->
+      <div class="ticket-assigned" *ngIf="ticket.assignedTo">
+        <ion-icon name="person-outline" class="assigned-icon"></ion-icon>
+        <span class="assigned-text">Técnico: {{ ticket.assignedTo }}</span>
+      </div>
     </div>
   </div>
 

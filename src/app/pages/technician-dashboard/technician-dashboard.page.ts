@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { 
   IonContent, 
@@ -14,19 +13,15 @@ import {
   IonChip,
   IonButtons,
   IonMenuButton,
-  IonRefresher,
-  IonRefresherContent,
   IonList,
   IonItem,
   IonLabel,
-  IonSegment,
-  IonSegmentButton,
   AlertController
 } from '@ionic/angular/standalone';
-import { TicketService } from '../../../services/ticket.service';
+import { TicketService } from '../../services/ticket.service';
 import { getAuth } from 'firebase/auth';
 import { addIcons } from 'ionicons';
-import { refreshOutline, checkmarkCircleOutline, timeOutline, closeCircleOutline, peopleOutline } from 'ionicons/icons';
+import { refreshOutline, ticketOutline, checkmarkCircleOutline, timeOutline } from 'ionicons/icons';
 
 interface Ticket {
   id?: string;
@@ -41,13 +36,12 @@ interface Ticket {
 }
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.page.html',
-  styleUrls: ['./admin-dashboard.page.scss'],
+  selector: 'app-technician-dashboard',
+  templateUrl: './technician-dashboard.page.html',
+  styleUrls: ['./technician-dashboard.page.scss'],
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     IonContent,
     IonHeader,
     IonTitle,
@@ -59,21 +53,15 @@ interface Ticket {
     IonChip,
     IonButtons,
     IonMenuButton,
-    IonRefresher,
-    IonRefresherContent,
     IonList,
     IonItem,
-    IonLabel,
-    IonSegment,
-    IonSegmentButton
+    IonLabel
   ]
 })
-export class AdminDashboardPage implements OnInit, OnDestroy {
+export class TechnicianDashboardPage implements OnInit, OnDestroy {
   tickets: Ticket[] = [];
-  ticketsFiltrados: Ticket[] = [];
-  stats = { total: 0, abiertos: 0, enProceso: 0, resueltos: 0 };
   isLoading: boolean = true;
-  filtroEstado: string = 'todos';
+  stats = { total: 0, abiertos: 0, enProceso: 0, resueltos: 0 };
   private unsubscribe: any;
 
   constructor(
@@ -81,10 +69,10 @@ export class AdminDashboardPage implements OnInit, OnDestroy {
     private router: Router,
     private alertController: AlertController
   ) {
-    addIcons({ refreshOutline, checkmarkCircleOutline, timeOutline, closeCircleOutline, peopleOutline });
+    addIcons({ refreshOutline, ticketOutline, checkmarkCircleOutline, timeOutline });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const auth = getAuth();
     const user = auth.currentUser;
     if (!user) {
@@ -96,10 +84,14 @@ export class AdminDashboardPage implements OnInit, OnDestroy {
 
   loadTickets() {
     this.isLoading = true;
-    this.unsubscribe = this.ticketService.getAllTickets((tickets: Ticket[]) => {
+    const userEmail = this.getCurrentUserEmail();
+    if (!userEmail) {
+      this.isLoading = false;
+      return;
+    }
+    this.unsubscribe = this.ticketService.getTicketsByTechnician(userEmail, (tickets) => {
       this.tickets = tickets;
       this.calculateStats();
-      this.aplicarFiltro();
       this.isLoading = false;
     });
   }
@@ -111,12 +103,9 @@ export class AdminDashboardPage implements OnInit, OnDestroy {
     this.stats.resueltos = this.tickets.filter(t => t.status === 'resuelto' || t.status === 'cerrado').length;
   }
 
-  aplicarFiltro() {
-    if (this.filtroEstado === 'todos') {
-      this.ticketsFiltrados = [...this.tickets];
-    } else {
-      this.ticketsFiltrados = this.tickets.filter(t => t.status === this.filtroEstado);
-    }
+  getCurrentUserEmail(): string {
+    const auth = getAuth();
+    return auth.currentUser?.email || '';
   }
 
   getStatusColor(status: string): string {
@@ -157,9 +146,8 @@ export class AdminDashboardPage implements OnInit, OnDestroy {
     return textos[priority] || priority;
   }
 
-  goToTicketDetail(ticketId: string, userId: string) {
-    // Usar la ruta con dos parámetros
-    this.router.navigate(['/ticket-detail', userId, ticketId]);
+  goToTicketDetail(ticket: Ticket) {
+    this.router.navigate(['/ticket-detail', ticket.userId, ticket.id]);
   }
 
   async doRefresh(event: any) {

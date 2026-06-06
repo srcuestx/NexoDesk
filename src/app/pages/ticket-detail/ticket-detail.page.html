@@ -9,19 +9,16 @@
 
 <ion-content class="detail-content">
   
-  <!-- Cargando -->
   <div *ngIf="isLoading" class="loading-state">
     <p>Cargando ticket...</p>
   </div>
 
-  <!-- Ticket no encontrado -->
   <div *ngIf="!isLoading && !ticket" class="empty-state">
     <ion-icon name="alert-circle-outline" class="empty-icon"></ion-icon>
     <p>Ticket no encontrado</p>
     <ion-button (click)="volver()">Volver al Dashboard</ion-button>
   </div>
 
-  <!-- Detalle del ticket -->
   <div *ngIf="!isLoading && ticket" class="ticket-detail">
     <ion-card class="detail-card">
       <ion-card-content>
@@ -39,6 +36,10 @@
           </ion-chip>
           <span class="date">📅 {{ ticket.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
           <span class="user">👤 {{ ticket.userEmail }}</span>
+          <span class="assigned" *ngIf="ticket.assignedTo">
+            <ion-icon name="person-outline"></ion-icon> Técnico: {{ ticket.assignedTo }}
+            <span *ngIf="ticket.assignedAt">({{ ticket.assignedAt | date:'dd/MM/yyyy HH:mm' }})</span>
+          </span>
         </div>
 
         <div class="ticket-description">
@@ -49,6 +50,59 @@
         <div class="ticket-response" *ngIf="ticket.response">
           <h3>Respuesta del soporte</h3>
           <p>{{ ticket.response }}</p>
+        </div>
+
+        <!-- Historial -->
+        <div class="ticket-history" *ngIf="ticket.history && ticket.history.length">
+          <h3>Historial de acciones</h3>
+          <ion-list>
+            <ion-item *ngFor="let h of ticket.history">
+              <ion-label>
+                <h4>{{ h.action }}</h4>
+                <p>Por: {{ h.by }} → {{ h.to || h.from }}</p>
+                <small>{{ h.at | date:'medium' }}</small>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Panel de gestión (visible para admin o técnico asignado) -->
+        <div *ngIf="esAdmin || esTecnicoAsignado" class="management-panel">
+          <ion-item-divider>
+            <ion-label>Gestión del Ticket</ion-label>
+          </ion-item-divider>
+
+          <!-- Cambiar estado -->
+          <ion-item>
+            <ion-label position="stacked">Cambiar estado</ion-label>
+            <ion-select [(ngModel)]="newStatus" interface="popover">
+              <ion-select-option value="abierto">Abierto</ion-select-option>
+              <ion-select-option value="en_proceso">En Proceso</ion-select-option>
+              <ion-select-option value="resuelto">Resuelto</ion-select-option>
+              <ion-select-option value="cerrado">Cerrado</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Reasignar técnico (solo administrador) -->
+          <ion-item *ngIf="esAdmin">
+            <ion-label position="stacked">Reasignar técnico</ion-label>
+            <ion-select [(ngModel)]="nuevoTecnico" interface="popover" (ionChange)="cambiarTecnico()">
+              <ion-select-option *ngFor="let tech of listaTecnicos" [value]="tech">
+                {{ tech }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Agregar comentario -->
+          <ion-item>
+            <ion-label position="stacked">Comentario / Respuesta</ion-label>
+            <ion-textarea rows="3" [(ngModel)]="adminResponse" placeholder="Escribe aquí tu comentario..."></ion-textarea>
+          </ion-item>
+
+          <ion-button expand="block" (click)="updateTicket()" class="update-button">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            Guardar cambios
+          </ion-button>
         </div>
 
       </ion-card-content>

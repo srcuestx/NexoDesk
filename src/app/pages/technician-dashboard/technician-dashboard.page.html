@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar class="technician-header">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Mis Tickets Asignados</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="doRefresh($event)">
+        <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="technician-content">
+  
+  <!-- Tarjetas de estadísticas -->
+  <div class="stats-grid">
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.total }}</div>
+        <div class="stat-label">Asignados</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.abiertos }}</div>
+        <div class="stat-label">Abiertos</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.enProceso }}</div>
+        <div class="stat-label">En Proceso</div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-value">{{ stats.resueltos }}</div>
+        <div class="stat-label">Resueltos</div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Lista de tickets -->
+  <div class="tickets-section">
+    <h2>Tickets</h2>
+    <div *ngIf="isLoading" class="loading-state">
+      <p>Cargando tickets...</p>
+    </div>
+    <div *ngIf="!isLoading && tickets.length === 0" class="empty-state">
+      <ion-icon name="ticket-outline" class="empty-icon"></ion-icon>
+      <p>No tienes tickets asignados aún</p>
+    </div>
+    <ion-list *ngIf="!isLoading && tickets.length > 0">
+      <ion-item *ngFor="let ticket of tickets" class="ticket-item" (click)="goToTicketDetail(ticket)" button>
+        <ion-label>
+          <h3>{{ ticket.title }}</h3>
+          <p>{{ ticket.description | slice:0:80 }}...</p>
+          <div class="ticket-meta">
+            <ion-chip [color]="getStatusColor(ticket.status)" size="small">{{ getStatusText(ticket.status) }}</ion-chip>
+            <ion-chip [color]="getPriorityColor(ticket.priority)" size="small" outline>{{ getPriorityText(ticket.priority) }}</ion-chip>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

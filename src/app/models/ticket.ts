@@ -8,8 +8,16 @@ export interface Ticket {
   updatedAt?: Date;
   userId: string;
   userEmail: string;
-  assignedTo?: string;
+  assignedTo?: string;        // técnico asignado
+  assignedAt?: string;        // fecha de asignación
   response?: string;
   isPaid: boolean;
   paymentId?: string;
+  history?: Array<{           // historial de acciones
+    action: string;
+    by: string;
+    to?: string;
+    from?: string;
+    at: string;
+  }>;
 }
